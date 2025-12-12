@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simple Calculator</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="container">
+<h1>Calculator</h1>
+<div class="calc-box">
+<input id="a" type="number" placeholder="First number" />
+<input id="b" type="number" placeholder="Second number" />
+
+
+<select id="op">
+<option value="add">+</option>
+<option value="sub">-</option>
+<option value="mul">×</option>
+<option value="div">÷</option>
+</select>
+
+
+<button onclick="calculate()">Calculate</button>
+
+
+<h2 id="result"></h2>
+</div>
+</div>
+
+
+<script>
+async function calculate() {
+const a = document.getElementById('a').value;
+const b = document.getElementById('b').value;
+const op = document.getElementById('op').value;
+
+
+const res = await fetch('/calculate', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ a, b, op })
+});
+
+
+const data = await res.json();
+document.getElementById('result').textContent = data.result !== undefined ? `Result: ${data.result}` : data.error;
+}
+</script>
+</body>
+</html>
